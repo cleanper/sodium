@@ -12,16 +12,16 @@ import org.apache.commons.lang3.Validate;
 
 public class SliderControl implements Control<Integer> {
     private final Option<Integer> option;
-
-    private final int min, max, interval;
-
+    private final int min;
+    private final int max;
+    private final int interval;
     private final ControlValueFormatter mode;
 
     public SliderControl(Option<Integer> option, int min, int max, int interval, ControlValueFormatter mode) {
-        Validate.isTrue(max > min, "The maximum value must be greater than the minimum value");
-        Validate.isTrue(interval > 0, "The slider interval must be greater than zero");
-        Validate.isTrue(((max - min) % interval) == 0, "The maximum value must be divisable by the interval");
-        Validate.notNull(mode, "The slider mode must not be null");
+        Validate.isTrue(min < max, "最大值必须大于最小值");
+        Validate.isTrue(interval > 0, "滑块间隔必须大于零");
+        Validate.isTrue((max - min) % interval == 0, "最大值必须能被间隔整除");
+        Validate.notNull(mode, "滑块模式不能为空");
 
         this.option = option;
         this.min = min;
@@ -46,31 +46,26 @@ public class SliderControl implements Control<Integer> {
     }
 
     private static class Button extends ControlElement<Integer> {
-        private static final int THUMB_WIDTH = 2, TRACK_HEIGHT = 1;
-
+        private static final int THUMB_WIDTH = 2;
+        private static final int TRACK_HEIGHT = 1;
         private final Rect2i sliderBounds;
         private int contentWidth;
         private final ControlValueFormatter formatter;
-
         private final int min;
         private final int max;
         private final int range;
         private final int interval;
-
         private double thumbPosition;
-
         private boolean sliderHeld;
 
         public Button(Option<Integer> option, Dim2i dim, int min, int max, int interval, ControlValueFormatter formatter) {
             super(option, dim);
-
             this.min = min;
             this.max = max;
             this.range = max - min;
             this.interval = interval;
             this.thumbPosition = this.getThumbPositionForValue(option.getValue());
             this.formatter = formatter;
-
             this.sliderBounds = new Rect2i(dim.getLimitX() - 96, dim.getCenterY() - 5, 90, 10);
             this.sliderHeld = false;
         }
@@ -81,39 +76,24 @@ public class SliderControl implements Control<Integer> {
             int sliderY = this.sliderBounds.getY();
             int sliderWidth = this.sliderBounds.getWidth();
             int sliderHeight = this.sliderBounds.getHeight();
-
-            var label = this.formatter.format(this.option.getValue())
-                    .copy();
+            var label = this.formatter.format(this.option.getValue()).copy();
 
             if (!this.option.isAvailable()) {
-                label.setStyle(Style.EMPTY
-                        .withColor(ChatFormatting.GRAY)
-                        .withItalic(true));
+                label.setStyle(Style.EMPTY.withColor(ChatFormatting.GRAY).withItalic(true));
             }
 
             int labelWidth = this.font.width(label);
-
             boolean drawSlider = this.option.isAvailable() && (this.hovered || this.isFocused());
-            if (drawSlider) {
-                this.contentWidth = sliderWidth + labelWidth;
-            } else {
-                this.contentWidth = labelWidth;
-            }
-
-            // render the label first and then the slider to prevent the highlight rect from darkening the slider
+            this.contentWidth = drawSlider ? sliderWidth + labelWidth : labelWidth;
             super.render(graphics, mouseX, mouseY, delta);
 
             if (drawSlider) {
                 this.thumbPosition = this.getThumbPositionForValue(this.option.getValue());
-
                 double thumbOffset = Mth.clamp((double) (this.getIntValue() - this.min) / this.range * sliderWidth, 0, sliderWidth);
-
                 int thumbX = (int) (sliderX + thumbOffset - THUMB_WIDTH);
                 int trackY = (int) (sliderY + (sliderHeight / 2f) - ((double) TRACK_HEIGHT / 2));
-
                 this.drawRect(graphics, thumbX, sliderY, thumbX + (THUMB_WIDTH * 2), sliderY + sliderHeight, 0xFFFFFFFF);
                 this.drawRect(graphics, sliderX, trackY, sliderX + sliderWidth, trackY + TRACK_HEIGHT, 0xFFFFFFFF);
-
                 this.drawString(graphics, label, sliderX - labelWidth - 6, sliderY + (sliderHeight / 2) - 4, 0xFFFFFFFF);
             } else {
                 this.drawString(graphics, label, sliderX + sliderWidth - labelWidth, sliderY + (sliderHeight / 2) - 4, 0xFFFFFFFF);
@@ -140,16 +120,13 @@ public class SliderControl implements Control<Integer> {
         @Override
         public boolean mouseClicked(double mouseX, double mouseY, int button) {
             this.sliderHeld = false;
-
             if (this.option.isAvailable() && button == 0 && this.dim.containsCursor(mouseX, mouseY)) {
                 if (this.sliderBounds.contains((int) mouseX, (int) mouseY)) {
                     this.setValueFromMouse(mouseX);
                     this.sliderHeld = true;
                 }
-
                 return true;
             }
-
             return false;
         }
 
@@ -159,9 +136,7 @@ public class SliderControl implements Control<Integer> {
 
         public void setValue(double d) {
             this.thumbPosition = Mth.clamp(d, 0.0D, 1.0D);
-
             int value = this.getIntValue();
-
             if (this.option.getValue() != value) {
                 this.option.setValue(value);
             }
@@ -170,7 +145,6 @@ public class SliderControl implements Control<Integer> {
         @Override
         public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
             if (!isFocused()) return false;
-
             if (keyCode == InputConstants.KEY_LEFT) {
                 this.option.setValue(Mth.clamp(this.option.getValue() - this.interval, this.min, this.max));
                 return true;
@@ -178,7 +152,6 @@ public class SliderControl implements Control<Integer> {
                 this.option.setValue(Mth.clamp(this.option.getValue() + this.interval, this.min, this.max));
                 return true;
             }
-
             return false;
         }
 
@@ -188,12 +161,9 @@ public class SliderControl implements Control<Integer> {
                 if (this.sliderHeld) {
                     this.setValueFromMouse(mouseX);
                 }
-
                 return true;
             }
-
             return false;
         }
     }
-
 }
