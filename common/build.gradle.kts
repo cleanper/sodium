@@ -67,12 +67,12 @@ dependencies {
 
     // We need to be careful during pre-launch that we don't touch any Minecraft classes, since other mods
     // will not yet have an opportunity to apply transformations.
-    configurationPreLaunch("org.lwjgl:lwjgl:3.3.6")
-    configurationPreLaunch("org.lwjgl:lwjgl-opengl:3.3.6")
-    configurationPreLaunch("net.java.dev.jna:jna:5.17.0")
-    configurationPreLaunch("net.java.dev.jna:jna-platform:5.17.0")
-    configurationPreLaunch("org.slf4j:slf4j-api:2.0.17")
-    configurationPreLaunch("org.jetbrains:annotations:26.0.2")
+    configurationPreLaunch("org.lwjgl:lwjgl:3.3.3")
+    configurationPreLaunch("org.lwjgl:lwjgl-opengl:3.3.3")More actions
+    configurationPreLaunch("net.java.dev.jna:jna:5.14.0")
+    configurationPreLaunch("net.java.dev.jna:jna-platform:5.14.0")
+    configurationPreLaunch("org.slf4j:slf4j-api:2.0.9")
+    configurationPreLaunch("org.jetbrains:annotations:25.0.0")
 }
 
 loom {
