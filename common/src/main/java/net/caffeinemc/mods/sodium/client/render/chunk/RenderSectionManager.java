@@ -415,7 +415,7 @@ public class RenderSectionManager {
 
             // if zero frame delay is allowed, submit important sorts with the current frame blocking collector.
             // otherwise submit with the collector that the next frame is blocking on.
-            if (SodiumClientMod.options().advanced.translucentSorting.getDeferMode().getDeferMode() == DeferMode.ZERO_FRAMES)
+            if (SodiumClientMod.options().debug.getSortBehavior().getDeferMode() == DeferMode.ZERO_FRAMES) {
                 this.submitSectionTasks(thisFrameBlockingCollector, nextFrameBlockingCollector, deferredCollector);
             } else {
                 this.submitSectionTasks(nextFrameBlockingCollector, nextFrameBlockingCollector, deferredCollector);
