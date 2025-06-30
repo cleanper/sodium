@@ -577,7 +577,7 @@ public class RenderSectionManager {
 
         if (section != null) {
             var pendingUpdate = ChunkUpdateType.SORT;
-            var priorityMode = SodiumClientMod.options().advanced.translucentSorting.getPriorityMode();
+            var priorityMode = SodiumClientMod.options().debug.getSortBehavior().getPriorityMode();
             if (priorityMode == PriorityMode.ALL
                     || priorityMode == PriorityMode.NEARBY && this.shouldPrioritizeTask(section, NEARBY_SORT_DISTANCE)) {
                 pendingUpdate = ChunkUpdateType.IMPORTANT_SORT;
