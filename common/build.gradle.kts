@@ -2,7 +2,7 @@ plugins {
     id("multiloader-base")
     id("java-library")
 
-    id("fabric-loom") version ("1.9.2")
+    id("fabric-loom") version ("1.10.5")
 }
 
 base {
@@ -50,10 +50,10 @@ dependencies {
         }
     })
 
-    compileOnly("io.github.llamalad7:mixinextras-common:0.3.5")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
+    compileOnly("io.github.llamalad7:mixinextras-common:0.4.1")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")
 
-    compileOnly("net.fabricmc:sponge-mixin:0.13.2+mixin.0.8.5")
+    compileOnly("net.fabricmc:sponge-mixin:0.15.4+mixin.0.8.7")
     compileOnly("net.fabricmc:fabric-loader:${BuildConfig.FABRIC_LOADER_VERSION}")
 
     fun addDependentFabricModule(name: String) {
@@ -67,12 +67,12 @@ dependencies {
 
     // We need to be careful during pre-launch that we don't touch any Minecraft classes, since other mods
     // will not yet have an opportunity to apply transformations.
-    configurationPreLaunch("org.lwjgl:lwjgl:3.3.3")
-    configurationPreLaunch("org.lwjgl:lwjgl-opengl:3.3.3")
-    configurationPreLaunch("net.java.dev.jna:jna:5.14.0")
-    configurationPreLaunch("net.java.dev.jna:jna-platform:5.14.0")
-    configurationPreLaunch("org.slf4j:slf4j-api:2.0.9")
-    configurationPreLaunch("org.jetbrains:annotations:25.0.0")
+    configurationPreLaunch("org.lwjgl:lwjgl:3.3.6")
+    configurationPreLaunch("org.lwjgl:lwjgl-opengl:3.3.6")
+    configurationPreLaunch("net.java.dev.jna:jna:5.17.0")
+    configurationPreLaunch("net.java.dev.jna:jna-platform:5.17.0")
+    configurationPreLaunch("org.slf4j:slf4j-api:2.0.17")
+    configurationPreLaunch("org.jetbrains:annotations:26.0.2")
 }
 
 loom {
