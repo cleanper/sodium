@@ -2,7 +2,7 @@ plugins {
     id("multiloader-base")
     id("java-library")
 
-    id("fabric-loom") version ("1.8.9")
+    id("fabric-loom") version ("1.10.5")
 }
 
 base {
@@ -50,10 +50,10 @@ dependencies {
         }
     })
 
-    compileOnly("io.github.llamalad7:mixinextras-common:0.3.5")
-    annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.5")
+    compileOnly("io.github.llamalad7:mixinextras-common:0.4.1")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")
 
-    compileOnly("net.fabricmc:sponge-mixin:0.13.2+mixin.0.8.5")
+    compileOnly("net.fabricmc:sponge-mixin:0.15.4+mixin.0.8.7")
     compileOnly("net.fabricmc:fabric-loader:${BuildConfig.FABRIC_LOADER_VERSION}")
 
     fun addDependentFabricModule(name: String) {
